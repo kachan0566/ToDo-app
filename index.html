@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDoアプリ</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <div class="container">
+      <header class="app-header">
+        <h1 class="app-title">ToDoアプリ</h1>
+      </header>
+
+      <section class="add-task" aria-label="タスク追加">
+        <p id="error-message" class="error-message is-hidden" role="alert" aria-live="polite"></p>
+        <label class="form-label" for="task-title">タスク名</label>
+        <input id="task-title" type="text" placeholder="例: 買い物に行く" maxlength="100">
+
+        <label class="form-label" for="task-desc">詳細</label>
+        <textarea id="task-desc" rows="3" placeholder="例: 牛乳とパンを買う"></textarea>
+
+        <button id="add-btn" type="button">追加</button>
+      </section>
+
+      <section class="controls" aria-label="操作エリア">
+        <div class="filter-group" role="group" aria-label="フィルタ">
+          <button class="filter-btn is-active" type="button" data-filter="all">すべて</button>
+          <button class="filter-btn" type="button" data-filter="active">未完了</button>
+          <button class="filter-btn" type="button" data-filter="completed">完了</button>
+        </div>
+
+        <div class="sort-group">
+          <label for="sort-select">並び替え</label>
+          <select id="sort-select">
+            <option value="newest">新しい順</option>
+            <option value="oldest">古い順</option>
+          </select>
+        </div>
+      </section>
+
+      <section id="todo-list" class="todo-list" aria-label="タスク一覧"></section>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
