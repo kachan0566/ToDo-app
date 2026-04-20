@@ -1,10 +1,10 @@
-アプリ起動
-↓
-HTML読み込み
-↓
+アプリ起動<br>
+↓<br>
+HTML読み込み<br>
+↓<br>
 JS読み込み
 
-#HTMLの要素をJSで使用するためのHTML要素の読み込みと紐付け
+##HTMLの要素をJSで使用するためのHTML要素の読み込みと紐付け
 ```
 const taskTitleInput = document.getElementById("task-title”);→`document`（HTML文書全体）`.getElementById("task-title”)`（〜の中からid属性がtask-titleの要素を返す）
 const filterButtons = document.querySelectorAll(".filter-btn");　.etc
@@ -28,8 +28,8 @@ const filterButtons = document.querySelectorAll(".filter-btn");　.etc
 <button class="filter-btn" type="button" data-filter="completed">完了</button>
 ```
 
-↓
-#初期処理
+↓<br>
+##初期処理
 ### init()
 ```
 function init() {
