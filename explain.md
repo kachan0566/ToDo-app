@@ -258,7 +258,6 @@ function saveTodos() {
 }
 ### 使用メソッド
 |localStorage.setItem(キー名,値）|ローカルストレージにキー名で定義された値を保存する|
-| --- | --- |
 |JSON.stringify()|（）をJSON文字列に変換|
 | --- | --- |
 
@@ -295,21 +294,20 @@ const todoList = document.getElementById("todo-list");
 ```
 
 ### 流れ
-getProcessedTodos()で加工されたタスク一覧を取得
-↓
-現在のHTML上のタスク一覧をinnerHTMLで空白として再描画
-↓
-取得したタスクが一つもない時、id = todo-listに"表示するタスクがありません。”を表示
-const empty = document.createElement(“p”);でHTML要素を作成→   todoList.appendChild(empty);でtodo-listに追加
-↓
-タスクをまとめてtodo-listに追加
+getProcessedTodos()で加工されたタスク一覧を取得<br>
+↓<br>
+現在のHTML上のタスク一覧をinnerHTMLで空白として再描画<br>
+↓<br>
+取得したタスクが一つもない時、id = todo-listに"表示するタスクがありません。”を表示<br>
+const empty = document.createElement(“p”);でHTML要素を作成→   todoList.appendChild(empty);でtodo-listに追加<br>
+↓<br>
+タスクをまとめてtodo-listに追加<br>
 createDocumentFragment();で作成したfragmentにcreateTodoElement(todo)で作成したタスクを追加→フラグメントをタスク一覧に追加
 
 ### 使用メソッド
 | `document.createElement()` | 新しく要素を作る |
 | --- | --- |
 | `〇〇.appendChild()` | 親要素の子として（）ノードを追加する |
-| --- | --- |
 | `document.createDocumentFragment()` | 複数要素を一時的に入れる「箱」を作る |
 | --- | --- |
 
@@ -342,22 +340,21 @@ function getProcessedTodos() {
 | `sort(比較関数)` | 配列を（）のルールに従って並べ替える（通常は `a`, `b` を比較） |
 | --- | --- |
 | `Date.（prototype）.getTime()` | 日付をミリ秒の数値にし、比較しやすくする |
-| --- | --- |
 | `filter(条件)` | 条件に合う要素だけを集めた新しい配列を返す |
 | --- | --- |
 
 ### 流れ
-loadTodosで取得したtodosをコピー
-↓
-フィルターごとの処理を定義
-currentFilter === "active”（フィルターが未完了）の時→コピーしたtodosの内、todo.completed（function addTodo/ const todoで定義)がfalseのtodoを取得しfilteredに再定義
-currentFilter === "completed”（フィルターが完了）の時→コピーしたtodosの内、todo.completedがtrueのtodoを取得しfilteredに再定義
-↓
-ソートの処理を定義
-new Date(a.createdAt).getTime();→aのcreatedAt（作成日時：function addTodo/ const todoで定義)のオブジェクトを数値で返す（getTime()）
+loadTodosで取得したtodosをコピー<br>
+↓<br>
+フィルターごとの処理を定義<br>
+currentFilter === "active”（フィルターが未完了）の時→コピーしたtodosの内、todo.completed（function addTodo/ const todoで定義)がfalseのtodoを取得しfilteredに再定義<br>
+currentFilter === "completed”（フィルターが完了）の時→コピーしたtodosの内、todo.completedがtrueのtodoを取得しfilteredに再定義<br>
+↓<br>
+ソートの処理を定義<br>
+new Date(a.createdAt).getTime();→aのcreatedAt（作成日時：function addTodo/ const todoで定義)のオブジェクトを数値で返す（getTime()）<br>
 
-currentSort === "newest" ? bTime - aTime : aTime - bTime;→現在のソートが新しい順であればcurrentSortはnewestであり、trueが選ばれbTime - aTime（1970年からのミリ秒が大きい方が新しい）
-↓
+currentSort === "newest" ? bTime - aTime : aTime - bTime;→現在のソートが新しい順であればcurrentSortはnewestであり、trueが選ばれbTime - aTime（1970年からのミリ秒が大きい方が新しい）<br>
+↓<br>
 実行したfilteredを返す
 
 ## 2-1-1-4-2.createTodoElement()
@@ -401,11 +398,11 @@ function createTodoElement(todo) {
 }
 
 ### 流れ
-新たにHTML要素を作成（div class = task-card ~、完了-編集中次第で〜に追加）
-↓
-editingTodoId === todo.id（編集中のタスク）
-Cardの子要素を作成（チェックボックスの定義、タイトルはユーザー入力のtodo.title（escapehtmlでHTML上での危険なコード入力を防ぐ）、作成日は(todo.createdAt）
-↓
+新たにHTML要素を作成（div class = task-card ~、完了-編集中次第で〜に追加）<br>
+↓<br>
+editingTodoId === todo.id（編集中のタスク）<br>
+Cardの子要素を作成（チェックボックスの定義、タイトルはユーザー入力のtodo.title（escapehtmlでHTML上での危険なコード入力を防ぐ）、作成日は(todo.createdAt）<br>
+↓<br>
 編集中でないタスクも同様の構成でHTMLを作成
 
 ## 2-1-1-4-2-1.formatDate
@@ -426,10 +423,10 @@ function formatDate(dateString) {
 ```
 }
 ### 流れ
-New Dateで引数（今回はtodo.createdAt）を日付けオブジェクトに変換
-↓
-getTime()でミリ秒の数値に変換し、Number.isNaNで数値として無効か判断（new Date()で変換したオブジェクトが日付としては有効か不明な為）
-↓
+New Dateで引数（今回はtodo.createdAt）を日付けオブジェクトに変換<br>
+↓<br>
+getTime()でミリ秒の数値に変換し、Number.isNaNで数値として無効か判断（new Date()で変換したオブジェクトが日付としては有効か不明な為）<br>
+↓<br>
 new Dateで変換した日付けオブジェクトをtoLocaleString("ja-JP", {})で日本表示形式に変換
 
 year: "numeric”→年は”数字”で表示
