@@ -262,6 +262,7 @@ function saveTodos() {
 
 ### 使用メソッド
 |localStorage.setItem(キー名,値）|ローカルストレージにキー名で定義された値を保存する|
+| --- | --- |
 |JSON.stringify()|（）をJSON文字列に変換|
 | --- | --- |
 
@@ -517,8 +518,8 @@ filterButtonsのbuttonそれぞれにclickしたらsetFilter(button.dataset.filt
 
 
 ### 使用メソッド
-（再）|querySelectorAll(“セレクタ”);|HTMLからセレクタと一致する要素を全て返す|
-　　 | `配列.forEach(要素) | 配列の各要素に対して処理を行う |
+|querySelectorAll(“セレクタ”);|HTMLからセレクタと一致する要素を全て返す|
+| `配列.forEach(要素) | 配列の各要素に対して処理を行う |
 | --- | --- |
 
 
