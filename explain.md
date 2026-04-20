@@ -64,8 +64,8 @@ function loadTodos() {
   } catch (error) {　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　上記でエラーが発生した場合、タスク一覧を空欄で返す
     todos = [];
   }
-```
 }
+```
 ### 使用メソッド
 |try{}catch(error){}|エラー発生の可能性が高い処理において、安全に処理を行うための構文。try{}にエラー発生の可能性がある処理、catch(error){}にエラー時の処理を記入。|
 | --- | --- |
@@ -96,8 +96,9 @@ function isValidTodo(todo) {
     typeof todo.createdAt === "string" &&
     typeof todo.updatedAt === "string"
   );
-```
 }
+```
+
 ### 演算子
 |条件a && 条件b|条件aと条件bの両方がtrueの場合のみtrueを返す|
 | --- | --- |
@@ -246,16 +247,18 @@ id = error-messageを持つHTMLのテキスト内容を空白にする。classLi
 function showError(message) {
   errorMessage.textContent = message;
   errorMessage.classList.remove("is-hidden");
-```
 }
+```
+
 
 ## 2-1-1-3.saveTodos
 ### タスク一覧を保存する
 ```
 function saveTodos() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-```
 }
+```
+
 ### 使用メソッド
 |localStorage.setItem(キー名,値）|ローカルストレージにキー名で定義された値を保存する|
 |JSON.stringify()|（）をJSON文字列に変換|
@@ -394,8 +397,9 @@ function createTodoElement(todo) {
   `;
 
   return card;
-```
 }
+```
+
 
 ### 流れ
 新たにHTML要素を作成（div class = task-card ~、完了-編集中次第で〜に追加）<br>
@@ -420,8 +424,9 @@ function formatDate(dateString) {
     hour: "2-digit",
     minute: "2-digit",
   });
-```
 }
+```
+
 ### 流れ
 New Dateで引数（今回はtodo.createdAt）を日付けオブジェクトに変換<br>
 ↓<br>
@@ -455,8 +460,9 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
-```
 }
+```
+
 ### 解釈
 因数を文字列に変換し、更に.replaceAll(a,b)によってaをbに置き換えることで、ユーザーが”&”や”<“”>”を入力してもHTML上で処理が実行されないようにする
 
@@ -474,8 +480,9 @@ taskTitleInput.addEventListener("keydown", (event) => {
       event.preventDefault();
       addTodo();
     }
-```
 });
+```
+
 ### 解釈
 Tasktitleinput(document.getElementById("task-title”);)にキーを押した時、
 「Enterキーを押したらデフォルト処理を防ぎ、addTodoを実行する」というイベントを登録
@@ -732,8 +739,9 @@ function saveEdit(id) {
   editingTodoId = null;
   saveTodos();
   renderTodos();
-```
 }
+```
+
 ### 流れ
 clearError(2-1-1-1)
 ↓
@@ -764,8 +772,9 @@ function cancelEdit() {
   editingTodoId = null;
   clearError();
   renderTodos();
-```
 }
+```
+
 ### 流れ
 編集中の状態を終了
 ↓
@@ -788,8 +797,9 @@ function deleteTodo(id) {
   }
   saveTodos();
   renderTodos();
-```
 }
+```
+
 
 ### 流れ
 確認画面を表示（window.confirm("このタスクを削除しますか？");）
@@ -813,12 +823,14 @@ renderTodos(2-1-1-4)
       toggleTodo(id);
     }
   });
-### "task-checkbox"
- <input class="task-checkbox" type="checkbox" ${todo.completed ? "checked" : ""}>
-### 流れ
 ```
-HTML上の"task-checkbox”を含むclassで操作を行った場合、最も近い".task-card”classのidを取得
-↓
+### "task-checkbox"
+```
+ <input class="task-checkbox" type="checkbox" ${todo.completed ? "checked" : ""}>
+ ```
+### 流れ
+HTML上の"task-checkbox”を含むclassで操作を行った場合、最も近い".task-card”classのidを取得<br>
+↓<br>
 そのidにおいてtoggletodoを実行
 
 ## 2-6-1.toggletodo
@@ -833,11 +845,11 @@ function toggleTodo(id) {
   renderTodos();
 ```
 ### 流れ
-引数のidと一致するtodo.idをタスク一覧から探す
-見つからなければ、空欄で返す
-↓
-上記で見つけたtodo.completedの真偽値を反転（true←→false)
-↓
-app.todoと同様にtodo.updateAtを取得
-↓
+引数のidと一致するtodo.idをタスク一覧から探す<br>
+見つからなければ、空欄で返す<br>
+↓<br>
+上記で見つけたtodo.completedの真偽値を反転（true←→false)<br>
+↓<br>
+app.todoと同様にtodo.updateAtを取得<br>
+↓<br>
 renderTodos(2-1-1-4)
