@@ -10,9 +10,8 @@ const taskTitleInput = document.getElementById("task-title”);→`document`（H
 const filterButtons = document.querySelectorAll(".filter-btn");　.etc
 ```
 
-使用メソッド
+・使用メソッド
 |getElementById(“id”);|HTMLから()を含むid要素を返す。|
-| --- | --- |
 上記であれば、
 <input id="task-title" type="text" placeholder="例: 買い物に行く" maxlength="100">
 |querySelectorAll(“セレクタ”);|HTMLからセレクタと一致する要素を全て返す。（）内が.始まり→class要素。|
