@@ -185,7 +185,6 @@ const taskDescInput = document.getElementById("task-desc");
 ```
 
 ### 解釈
-```
 id="task-title”、"task-desc”を含むHTML上（タイトル入力欄とタスク詳細入力欄）の空白を削除(trim)
 空白のみの入力でもタスクが追加されるのを防ぐ
 
