@@ -560,8 +560,8 @@ const sortSelect = document.getElementById("sort-select");
 function setSort(sortType) {
   currentSort = sortType;
   renderTodos();
-```
 }
+```
 ### 解釈
 setSort(event.target.value)の場合、event（変更）が操作された値をcurrentSort = に設定し、renderTodosで再描画する
 ```
@@ -576,15 +576,14 @@ function renderTodos() {
     todoList.appendChild(empty);
     return;
   }
-```
 
-```
   const fragment = document.createDocumentFragment();
   list.forEach((todo) => {
     fragment.appendChild(createTodoElement(todo));
   });
   todoList.appendChild(fragment);
 }
+```
 
 ```
 function getProcessedTodos() {
