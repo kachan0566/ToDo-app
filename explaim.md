@@ -17,6 +17,7 @@ const filterButtons = document.querySelectorAll(".filter-btn");　.etc
 <input id="task-title" type="text" placeholder="例: 買い物に行く" maxlength="100">
 ```
 |querySelectorAll(“セレクタ”);|HTMLからセレクタと一致する要素を全て返す。（）内が.始まり→class要素。|
+| --- | --- |
 上記であれば、 
 ```
 <button class="filter-btn is-active" type="button" data-filter="all">すべて</button>
