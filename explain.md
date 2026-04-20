@@ -118,10 +118,10 @@ function bindEvents() {
 ### ユーザーがタスク追加ボタンをクリックした時の処理
 ```
 addBtn.addEventListener("click", addTodo);
+```
 ### 使用メソッド
 |〇〇.addEventListener(操作,処理）|〇〇に”操作”をした場合、”処理”を実行するイベントを登録|
 | --- | --- |
-```
 
 ### 実行内容
 ユーザーが`id = add-btn`を持つ”追加”ボタンを”クリック”したらaddTodoを実行する
@@ -129,6 +129,7 @@ addBtn.addEventListener("click", addTodo);
 ### HTML
 ```
 <button id="add-btn" type="button">追加</button>
+```
 ### JS
 
 ```
