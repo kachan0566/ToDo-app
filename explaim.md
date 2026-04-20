@@ -76,11 +76,11 @@ function loadTodos() {
 
 今回で言えば、localStorage.getItem(STORAGE_KEY)において、文字列としてローカルストレージから取り出してきたデータに問題があり、JSON.parse(saved)でJSONの配列やオブジェクトに変換する際にエラーが発生する可能性がある。
 |.getItem(キー名)|キー名の保存データを文字列のまま取得|　
-| --- | --- |
 |JSON.parse()|文字列データをJSON形式の配列やオブジェクトに変換|
 |!Array.isArray()|()の要素が配列かどうかを確認し（.isArray)、配列でなかった場合(!Array)、trueを返す|
 |filter()|（）の条件がtrueのものだけを返す|
 |map(（要素)=>({処理}|各(要素)に{処理}を行い新たに配列を作成する|
+| --- | --- |
 
 - 流れ
 if(saved){…　保存データの有無を確認
