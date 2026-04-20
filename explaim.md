@@ -70,7 +70,7 @@ function loadTodos() {
   }
 ```
 }
-- 使用メソッド
+### 使用メソッド
 |try{}catch(error){}|エラー発生の可能性が高い処理において、安全に処理を行うための構文。try{}にエラー発生の可能性がある処理、catch(error){}にエラー時の処理を記入。|
 | --- | --- |
 |`getItem(キー名)`|キー名の保存データを文字列のまま取得する|
@@ -122,7 +122,7 @@ function bindEvents() {
 - ユーザーがタスク追加ボタンをクリックした時の処理
 ```
 addBtn.addEventListener("click", addTodo);
-- 使用メソッド
+### 使用メソッド
 |〇〇.addEventListener(操作,処理）|〇〇に”操作”をした場合、”処理”を実行するイベントを登録|
 | --- | --- |
 ```
@@ -215,7 +215,7 @@ renderTodos();　タスク一覧を再描画
 taskTitleInput.value = “”;…　各入力欄を空白に戻し、再度操作対象を入力欄へ
 ```
 
-- 使用メソッド
+### 使用メソッド
 | `trim()` | 文字列の前後の空白を削除する |
 | --- | --- |
 | `〇〇.focus()` | 〇〇をキーボード操作の対象にする |
@@ -266,7 +266,7 @@ function saveTodos() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
 ```
 }
-- 使用メソッド
+### 使用メソッド
 |localStorage.setItem(キー名,値）|ローカルストレージにキー名で定義された値を保存する|
 | --- | --- |
 |JSON.stringify()|（）をJSON文字列に変換|
@@ -321,7 +321,7 @@ const empty = document.createElement(“p”);でHTML要素を作成→   todoLi
 タスクをまとめてtodo-listに追加
 createDocumentFragment();で作成したfragmentにcreateTodoElement(todo)で作成したタスクを追加→フラグメントをタスク一覧に追加
 
-- 使用メソッド
+### 使用メソッド
 | `document.createElement()` | 新しく要素を作る |
 | --- | --- |
 | `〇〇.appendChild()` | 親要素の子として（）ノードを追加する |
@@ -361,7 +361,7 @@ function getProcessedTodos() {
   return filtered;
 ```
 
-- 使用メソッド
+### 使用メソッド
 | `sort(比較関数)` | 配列を（）のルールに従って並べ替える（通常は `a`, `b` を比較） |
 | --- | --- |
 | `Date.（prototype）.getTime()` | 日付をミリ秒の数値にし、比較しやすくする |
@@ -470,7 +470,7 @@ const date(function formatDate) = new Date()→上記の日付オブジェクト
 return date.toLocaleString("ja-JP", { ---→2026/04/17 17:30
 ```
 
-- 使用メソッド
+### 使用メソッド
 | `Number.isNaN()` | 値が `NaN` かどうかを判定する |
 | --- | --- |
 | `toLocaleString()` | 地域に合った日時などの表記文字列にする |
@@ -492,7 +492,7 @@ function escapeHtml(value) {
 - 解釈
 因数を文字列に変換し、更に.replaceAll(a,b)によってaをbに置き換えることで、ユーザーが”&”や”<“”>”を入力してもHTML上で処理が実行されないようにする
 
-- 使用メソッド
+### 使用メソッド
 | `replaceAll(a, b)` | 文字列内の `a` をすべて `b` に置き換える |
 | --- | --- |
 
@@ -512,7 +512,7 @@ taskTitleInput.addEventListener("keydown", (event) => {
 Tasktitleinput(document.getElementById("task-title”);)にキーを押した時、
 「Enterキーを押したらデフォルト処理を防ぎ、addTodoを実行する」というイベントを登録
 
-- 使用メソッド
+### 使用メソッド
 | `preventDefault()` | ブラウザの既定の動作を防ぐ（例: Enter でフォーム送信されるのを止める） |
 | --- | --- |
 
@@ -535,7 +535,7 @@ const filterButtons = document.querySelectorAll(".filter-btn");
 filterButtonsのbuttonそれぞれにclickしたらsetFilter(button.dataset.filter);→（HTMLのbutton data-filter）を実行する
 ```
 
-- 使用メソッド
+### 使用メソッド
 （再）|querySelectorAll(“セレクタ”);|HTMLからセレクタと一致する要素を全て返す|
 　　 | `配列.forEach(要素) | 配列の各要素に対して処理を行う |
 | --- | --- |
@@ -552,7 +552,7 @@ function setFilter(filterType) {
   renderTodos();
 ```
 }
-- 使用メソッド
+### 使用メソッド
 |〇〇.toggle(クラス名,条件）|条件がtrueの時にクラス名を〇〇につける、falseの時に外す|
 | --- | --- |
 
@@ -814,7 +814,7 @@ saveTodos(2-1-1-3)
 ↓
 renderTodos(2-1-1-4)
 
-- 使用メソッド
+### 使用メソッド
 | `CSS.escape()` | 文字列をセレクタに埋め込んでも安全になるようエスケープする |
 | --- | --- |
 | `classList.add()` | 要素にクラスを追加する |
