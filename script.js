@@ -1,4 +1,4 @@
-const STORAGE_KEY = "todoAppTasks";
+const API_URL = "api/todos.php";
 
 let todos = [];
 let currentFilter = "all";
@@ -6,17 +6,16 @@ let currentSort = "newest";
 let editingTodoId = null;
 
 const taskTitleInput = document.getElementById("task-title");
-const taskDescInput = document.getElementById("task-desc");
-const addBtn = document.getElementById("add-btn");
-const todoList = document.getElementById("todo-list");
-const filterButtons = document.querySelectorAll(".filter-btn");
-const sortSelect = document.getElementById("sort-select");
-const errorMessage = document.getElementById("error-message");
+const taskDescInput  = document.getElementById("task-desc");
+const addBtn         = document.getElementById("add-btn");
+const todoList       = document.getElementById("todo-list");
+const filterButtons  = document.querySelectorAll(".filter-btn");
+const sortSelect     = document.getElementById("sort-select");
+const errorMessage   = document.getElementById("error-message");
 
-function init() {
-  loadTodos();
+async function init() {
   bindEvents();
-  renderTodos();
+  await loadTodos();
 }
 
 function bindEvents() {
@@ -41,14 +40,10 @@ function bindEvents() {
 
   todoList.addEventListener("click", (event) => {
     const actionButton = event.target.closest("button");
-    if (!actionButton) {
-      return;
-    }
+    if (!actionButton) return;
 
     const card = actionButton.closest(".task-card");
-    if (!card) {
-      return;
-    }
+    if (!card) return;
 
     const { id } = card.dataset;
 
@@ -56,17 +51,14 @@ function bindEvents() {
       startEdit(id);
       return;
     }
-
     if (actionButton.classList.contains("save-btn")) {
       saveEdit(id);
       return;
     }
-
     if (actionButton.classList.contains("cancel-btn")) {
       cancelEdit();
       return;
     }
-
     if (actionButton.classList.contains("delete-btn")) {
       deleteTodo(id);
     }
@@ -75,16 +67,28 @@ function bindEvents() {
   todoList.addEventListener("change", (event) => {
     if (event.target.classList.contains("task-checkbox")) {
       const card = event.target.closest(".task-card");
-      if (card) {
-        toggleTodo(card.dataset.id);
-      }
+      if (card) toggleTodo(card.dataset.id);
     }
   });
 }
 
-function addTodo() {
+// ── API: 一覧取得 ─────────────────────────────────────────────
+async function loadTodos() {
+  try {
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    todos = data.map(normalizeTodo);
+    renderTodos();
+  } catch {
+    showError("データの取得に失敗しました");
+  }
+}
+
+// ── API: タスク追加 ───────────────────────────────────────────
+async function addTodo() {
   clearError();
-  const title = taskTitleInput.value.trim();
+  const title       = taskTitleInput.value.trim();
   const description = taskDescInput.value.trim();
 
   if (!title) {
@@ -93,25 +97,111 @@ function addTodo() {
     return;
   }
 
-  const now = new Date().toISOString();
-  const todo = {
-    id: Date.now().toString(),
-    title,
-    description,
-    completed: false,
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  todos.push(todo);
-  saveTodos();
-  renderTodos();
-
-  taskTitleInput.value = "";
-  taskDescInput.value = "";
-  taskTitleInput.focus();
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description }),
+    });
+    if (!res.ok) throw new Error();
+    taskTitleInput.value = "";
+    taskDescInput.value  = "";
+    taskTitleInput.focus();
+    await loadTodos();
+  } catch {
+    showError("タスクの追加に失敗しました");
+  }
 }
 
+// ── API: 完了/未完了を切り替え ────────────────────────────────
+async function toggleTodo(id) {
+  const target = todos.find((todo) => todo.id === id);
+  if (!target) return;
+
+  try {
+    const res = await fetch(`${API_URL}?id=${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title:       target.title,
+        description: target.description,
+        completed:   target.completed ? 0 : 1,
+      }),
+    });
+    if (!res.ok) throw new Error();
+    await loadTodos();
+  } catch {
+    showError("タスクの更新に失敗しました");
+  }
+}
+
+function startEdit(id) {
+  editingTodoId = id;
+  clearError();
+  renderTodos();
+}
+
+// ── API: 編集内容を保存 ───────────────────────────────────────
+async function saveEdit(id) {
+  clearError();
+  const card = todoList.querySelector(`.task-card[data-id="${CSS.escape(id)}"]`);
+  if (!card) return;
+
+  const titleInput = card.querySelector(".edit-title-input");
+  const descInput  = card.querySelector(".edit-desc-input");
+  const title       = titleInput.value.trim();
+  const description = descInput.value.trim();
+
+  if (!title) {
+    showError("タスク名を入力してください");
+    titleInput.classList.add("error");
+    titleInput.focus();
+    return;
+  }
+
+  const target = todos.find((todo) => todo.id === id);
+  if (!target) return;
+
+  try {
+    const res = await fetch(`${API_URL}?id=${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title,
+        description,
+        completed: target.completed ? 1 : 0,
+      }),
+    });
+    if (!res.ok) throw new Error();
+    editingTodoId = null;
+    await loadTodos();
+  } catch {
+    showError("タスクの保存に失敗しました");
+  }
+}
+
+function cancelEdit() {
+  editingTodoId = null;
+  clearError();
+  renderTodos();
+}
+
+// ── API: タスク削除 ───────────────────────────────────────────
+async function deleteTodo(id) {
+  const ok = window.confirm("このタスクを削除しますか？");
+  if (!ok) return;
+
+  try {
+    const res = await fetch(`${API_URL}?id=${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error();
+    if (editingTodoId === id) editingTodoId = null;
+    await loadTodos();
+  } catch {
+    showError("タスクの削除に失敗しました");
+  }
+}
+
+// ── 描画 ──────────────────────────────────────────────────────
 function renderTodos() {
   const list = getProcessedTodos();
   todoList.innerHTML = "";
@@ -186,77 +276,7 @@ function createTodoElement(todo) {
   return card;
 }
 
-function toggleTodo(id) {
-  const target = todos.find((todo) => todo.id === id);
-  if (!target) {
-    return;
-  }
-
-  target.completed = !target.completed;
-  target.updatedAt = new Date().toISOString();
-  saveTodos();
-  renderTodos();
-}
-
-function startEdit(id) {
-  editingTodoId = id;
-  clearError();
-  renderTodos();
-}
-
-function saveEdit(id) {
-  clearError();
-  const card = todoList.querySelector(`.task-card[data-id="${CSS.escape(id)}"]`);
-  if (!card) {
-    return;
-  }
-
-  const titleInput = card.querySelector(".edit-title-input");
-  const descInput = card.querySelector(".edit-desc-input");
-  const title = titleInput.value.trim();
-  const description = descInput.value.trim();
-
-  if (!title) {
-    showError("タスク名を入力してください");
-    titleInput.classList.add("error");
-    titleInput.focus();
-    return;
-  }
-
-  const target = todos.find((todo) => todo.id === id);
-  if (!target) {
-    return;
-  }
-
-  target.title = title;
-  target.description = description;
-  target.updatedAt = new Date().toISOString();
-
-  editingTodoId = null;
-  saveTodos();
-  renderTodos();
-}
-
-function cancelEdit() {
-  editingTodoId = null;
-  clearError();
-  renderTodos();
-}
-
-function deleteTodo(id) {
-  const ok = window.confirm("このタスクを削除しますか？");
-  if (!ok) {
-    return;
-  }
-
-  todos = todos.filter((todo) => todo.id !== id);
-  if (editingTodoId === id) {
-    editingTodoId = null;
-  }
-  saveTodos();
-  renderTodos();
-}
-
+// ── フィルタ・ソート ──────────────────────────────────────────
 function setFilter(filterType) {
   currentFilter = filterType;
   filterButtons.forEach((button) => {
@@ -270,43 +290,18 @@ function setSort(sortType) {
   renderTodos();
 }
 
-function saveTodos() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-}
+// ── ユーティリティ ────────────────────────────────────────────
 
-function loadTodos() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) {
-      todos = [];
-      return;
-    }
-
-    const parsed = JSON.parse(saved);
-    if (!Array.isArray(parsed)) {
-      todos = [];
-      return;
-    }
-
-    todos = parsed.filter(isValidTodo).map((todo) => ({
-      ...todo,
-      title: String(todo.title),
-      description: String(todo.description || ""),
-      completed: Boolean(todo.completed),
-    }));
-  } catch (error) {
-    todos = [];
-  }
-}
-
-function isValidTodo(todo) {
-  return (
-    todo &&
-    typeof todo.id === "string" &&
-    typeof todo.title === "string" &&
-    typeof todo.createdAt === "string" &&
-    typeof todo.updatedAt === "string"
-  );
+// MySQLのレスポンス（snake_case）をJS側の形式に変換する
+function normalizeTodo(todo) {
+  return {
+    id:          String(todo.id),
+    title:       todo.title,
+    description: todo.description || "",
+    completed:   Boolean(Number(todo.completed)),
+    createdAt:   todo.created_at,
+    updatedAt:   todo.updated_at,
+  };
 }
 
 function showError(message) {
@@ -321,25 +316,23 @@ function clearError() {
 
 function formatDate(dateString) {
   const date = new Date(dateString);
-  if (Number.isNaN(date.getTime())) {
-    return "-";
-  }
+  if (Number.isNaN(date.getTime())) return "-";
   return date.toLocaleString("ja-JP", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
+    year:   "numeric",
+    month:  "2-digit",
+    day:    "2-digit",
+    hour:   "2-digit",
     minute: "2-digit",
   });
 }
 
 function escapeHtml(value) {
   return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+    .replaceAll("&",  "&amp;")
+    .replaceAll("<",  "&lt;")
+    .replaceAll(">",  "&gt;")
+    .replaceAll('"',  "&quot;")
+    .replaceAll("'",  "&#39;");
 }
 
 init();
